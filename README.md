@@ -4,7 +4,7 @@ Bu backend saytdagi buyurtma formasidan kelgan ma'lumotlarni qabul qiladi, bazag
 saqlaydi va **har bir yangi buyurtmani avtomatik ravishda Telegram botga** yuboradi.
 Admin panel orqali buyurtmalar va sharhlarni kuzatib borasiz.
 
-## GitHub'ga yuklanadigan fayllar (barchasi bitta darajada, papkasiz)
+## GitHub'ga yuklanadigan fayllar
 
 ```
 oss-steam-backend/
@@ -12,11 +12,16 @@ oss-steam-backend/
 ├── package.json
 ├── .env.example
 ├── README.md
-└── admin.html          <- diqqat: "public/" papkasi ICHIDA EMAS, to'g'ridan-to'g'ri asosiy joyda
+└── public/
+    ├── index.html       <- sayt (mijozlar ko'radigan sahifa)
+    └── admin.html       <- admin panel
 ```
 
-Agar avval `public/admin.html` deb yuklagan bo'lsangiz — uni o'chirib, shu joyga
-(asosiy papkaga) qayta yuklang, aks holda admin panel ochilmaydi.
+Sayt endi backend bilan **bitta joyda** (bitta Railway domenida) ishlaydi — bu shart,
+chunki alohida joylashtirilgan sahifalar (masalan Claude'da nashr qilingan havola)
+xavfsizlik siyosati tufayli tashqi serverga so'rov yubora olmaydi. Railway'dagi
+domeningizni ochsangiz — sizga to'g'ridan-to'g'ri saytning o'zi chiqadi, `/admin.html`
+esa admin panel bo'ladi.
 
 ## Nima uchun Steam akkauntni o'zi avtomatik yaratmaydi
 
@@ -28,7 +33,7 @@ yaratish jarayonini operator (siz) qo'lda bajarasiz, so'ng admin paneldan buyurt
 
 ## Railway'da ishga tushirish
 
-1. Yuqoridagi 5 ta faylni GitHub repongizga yuklang (papkasiz, bitta darajada).
+1. Yuqoridagi fayl tuzilishiga qarab, GitHub repongizga yuklang: server.js, package.json, .env.example, README.md asosiy papkaga; index.html va admin.html esa public/ nomli papka ichiga.
 2. railway.app'da "New Project" → "Deploy from GitHub repo" → repongizni tanlang.
 3. "Variables" bo'limida quyidagilarni qo'shing:
    - `TELEGRAM_BOT_TOKEN` — @BotFather'dan olingan token
@@ -36,9 +41,8 @@ yaratish jarayonini operator (siz) qo'lda bajarasiz, so'ng admin paneldan buyurt
    - `ADMIN_TOKEN` — `.env.example`dagi tayyor qiymat (yoki o'zingiz yangisini generatsiya qiling)
    - `ALLOWED_ORIGIN` — hozircha `*` deb qoldiring
    - `PORT` — `3000`
-4. "Settings" → "Networking" → "Generate Domain" — sizga URL beriladi.
-5. Shu URL'ni `oss-steam.html` faylidagi `BACKEND_URL` o'zgaruvchisiga yozing.
-6. `https://sizning-domeningiz/admin.html` sahifasini oching, `ADMIN_TOKEN` qiymatini kiriting.
+4. "Settings" → "Networking" → "Generate Domain" — sizga URL beriladi. Shu URL — sizning saytingiz manzili, boshqa hech narsa qilish shart emas.
+5. `https://sizning-domeningiz/admin.html` sahifasini oching, `ADMIN_TOKEN` qiymatini kiriting.
 
 ## Tekshirish
 

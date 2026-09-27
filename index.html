@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OSS Steam — Comfort your life</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e141b; --bg-raised:#141d27; --bg-raised2:#182230; --line:#26333f;
+    --text:#eef3f6; --text-dim:#93a4b2; --accent:#5ec8d8; --accent-soft:rgba(94,200,216,.12); --ok:#7fd99a; --warn:#e8b563;
+    box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  html{scroll-padding-top:env(safe-area-inset-top,0px); scroll-behavior:smooth;}
+  *{box-sizing:border-box;}
+  html,body{margin:0;background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-serif;}
+  h1,h2,h3{font-family:'Sora',sans-serif;margin:0;}
+  p{margin:0;} img{max-width:100%;} a{color:inherit;}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px;}
+
+  nav{position:sticky;top:0;top:env(safe-area-inset-top,0px);z-index:30;background:rgba(14,20,27,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:1100px;margin:0 auto;}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.05rem;}
+  .logo-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#3a8fa0);display:flex;align-items:center;justify-content:center;font-family:'Sora';font-weight:800;color:#0b1218;font-size:.82rem;}
+  .nav-links{display:flex;gap:26px;font-size:.9rem;color:var(--text-dim);}
+  .nav-links a{text-decoration:none;transition:color .2s;}
+  .nav-links a:hover{color:var(--text);}
+  .nav-cta{background:var(--accent);color:#0b1218;padding:9px 18px;border-radius:8px;font-weight:600;font-size:.88rem;text-decoration:none;white-space:nowrap;}
+  @media (max-width:820px){ .nav-links{display:none;} }
+
+  .hero{padding:80px 0 64px;}
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center;}
+  @media (max-width:860px){.hero-grid{grid-template-columns:1fr;}}
+  .eyebrow{color:var(--accent);font-weight:600;font-size:.94rem;margin-bottom:16px;}
+  .hero h1{font-size:clamp(2rem,4.2vw,3.3rem);line-height:1.08;font-weight:700;letter-spacing:-.01em;}
+  .hero p.lead{margin-top:20px;color:var(--text-dim);font-size:1.06rem;line-height:1.6;max-width:54ch;}
+  .hero-actions{margin-top:30px;display:flex;gap:14px;flex-wrap:wrap;}
+  .btn{padding:13px 24px;border-radius:9px;font-weight:600;font-size:.95rem;text-decoration:none;display:inline-block;border:1px solid transparent;cursor:pointer;transition:transform .15s,background .2s;}
+  .btn:active{transform:scale(.98);}
+  .btn-primary{background:var(--accent);color:#0b1218;}
+  .btn-primary:hover{background:#78d4e1;}
+  .btn-ghost{background:transparent;border-color:var(--line);color:var(--text);}
+  .btn-ghost:hover{border-color:var(--accent);}
+  .hero-card{background:var(--bg-raised);border:1px solid var(--line);border-radius:16px;padding:24px;}
+  .hero-card-row{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:.92rem;}
+  .hero-card-row:last-child{border-bottom:none;}
+  .hero-card-row span:first-child{color:var(--text-dim);}
+  .pill{background:var(--accent-soft);color:var(--accent);padding:3px 10px;border-radius:999px;font-size:.76rem;font-weight:600;}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding:32px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  @media (max-width:700px){.stats{grid-template-columns:1fr 1fr;}}
+  .stat b{font-family:'Sora';font-size:1.7rem;color:var(--accent);display:block;}
+  .stat span{color:var(--text-dim);font-size:.84rem;}
+
+  .section{padding:64px 0;border-top:1px solid var(--line);}
+  .section-head{max-width:56ch;margin-bottom:38px;}
+  .section-head h2{font-size:clamp(1.45rem,2.5vw,1.9rem);font-weight:700;}
+  .section-head p{margin-top:12px;color:var(--text-dim);font-size:1rem;line-height:1.6;}
+
+  .services{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  @media (max-width:760px){.services{grid-template-columns:1fr;}}
+  .service-card{background:var(--bg-raised);border:1px solid var(--line);border-radius:14px;padding:26px;display:flex;flex-direction:column;gap:12px;}
+  .service-card h3{font-size:1.15rem;font-weight:600;}
+  .service-card p{color:var(--text-dim);font-size:.93rem;line-height:1.6;}
+  .service-price{margin-top:auto;padding-top:14px;border-top:1px solid var(--line);display:flex;align-items:baseline;justify-content:space-between;}
+  .service-price .amount{font-family:'Sora';font-size:1.25rem;font-weight:700;color:var(--accent);}
+  .service-price .unit{color:var(--text-dim);font-size:.82rem;}
+
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  @media (max-width:760px){.steps{grid-template-columns:1fr;}}
+  .step{padding-top:18px;border-top:2px solid var(--accent);}
+  .step .num{color:var(--text-dim);font-family:'Sora';font-size:.84rem;}
+  .step h3{margin-top:8px;font-size:1.02rem;font-weight:600;}
+  .step p{margin-top:8px;color:var(--text-dim);font-size:.9rem;line-height:1.6;}
+
+  .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  @media (max-width:820px){.pricing{grid-template-columns:1fr;}}
+  .price-card{background:var(--bg-raised);border:1px solid var(--line);border-radius:14px;padding:26px;display:flex;flex-direction:column;gap:14px;}
+  .price-card.featured{border-color:var(--accent);background:var(--bg-raised2);}
+  .price-card h3{font-size:1.05rem;font-weight:600;}
+  .price-card .p-amount{font-family:'Sora';font-size:1.6rem;font-weight:700;}
+  .price-card ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px;color:var(--text-dim);font-size:.88rem;}
+  .price-card li:before{content:"✓ ";color:var(--ok);}
+  .price-card .btn{margin-top:auto;text-align:center;}
+
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start;}
+  @media (max-width:820px){.about-grid{grid-template-columns:1fr;}}
+  .about-text p{color:var(--text-dim);font-size:.98rem;line-height:1.75;margin-bottom:16px;}
+  .about-list{display:flex;flex-direction:column;gap:16px;}
+  .about-item{background:var(--bg-raised);border:1px solid var(--line);border-radius:12px;padding:18px 20px;}
+  .about-item h4{font-size:.96rem;font-weight:600;margin-bottom:6px;}
+  .about-item p{color:var(--text-dim);font-size:.87rem;line-height:1.55;}
+
+  .faq{display:flex;flex-direction:column;gap:10px;max-width:760px;}
+  .faq-item{background:var(--bg-raised);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  .faq-q{width:100%;text-align:left;background:none;border:none;color:var(--text);padding:17px 20px;font-family:'Sora';font-size:.96rem;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;}
+  .faq-q .icon{color:var(--accent);font-size:1.1rem;transition:transform .2s;flex-shrink:0;}
+  .faq-item.open .faq-q .icon{transform:rotate(45deg);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .25s ease;}
+  .faq-item.open .faq-a{max-height:220px;}
+  .faq-a p{padding:0 20px 18px;color:var(--text-dim);font-size:.9rem;line-height:1.6;}
+
+  .form-section{background:var(--bg-raised);}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;}
+  @media (max-width:820px){.form-grid{grid-template-columns:1fr;}}
+  .form-note{color:var(--text-dim);font-size:.93rem;line-height:1.7;}
+  .form-note ul{margin:14px 0 0;padding-left:18px;}
+  .form-note li{margin-bottom:8px;}
+  form{display:flex;flex-direction:column;gap:14px;}
+  .field label{display:block;font-size:.85rem;color:var(--text-dim);margin-bottom:6px;}
+  .field input,.field select{width:100%;background:var(--bg);border:1px solid var(--line);color:var(--text);padding:12px 14px;border-radius:9px;font-size:.95rem;font-family:inherit;}
+  .field input:focus,.field select:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent);}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media (max-width:480px){.field-row{grid-template-columns:1fr;}}
+  .submit-row{margin-top:4px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  #formMsg{font-size:.88rem;min-height:1.2em;}
+  #formMsg.ok{color:var(--ok);} #formMsg.err{color:var(--warn);}
+
+  /* REVIEWS */
+  .rating-summary{display:flex;gap:20px;align-items:center;background:var(--bg-raised);border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin-bottom:28px;}
+  .rating-big{font-family:'Sora';font-size:2.6rem;font-weight:800;color:var(--accent);line-height:1;}
+  .rating-stars-big{color:#e8b563;font-size:1.2rem;letter-spacing:2px;}
+  .rating-count{color:var(--text-dim);font-size:.85rem;margin-top:4px;}
+  .reviews-list{display:flex;flex-direction:column;gap:14px;margin-bottom:36px;max-height:520px;overflow-y:auto;}
+  .review-card{background:var(--bg-raised);border:1px solid var(--line);border-radius:12px;padding:18px 20px;}
+  .review-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .review-name{font-weight:600;font-size:.94rem;}
+  .review-stars{color:#e8b563;font-size:.95rem;letter-spacing:1px;}
+  .review-comment{color:var(--text-dim);font-size:.9rem;line-height:1.55;}
+  .review-date{color:var(--text-dim);font-size:.76rem;margin-top:8px;}
+  .review-empty{color:var(--text-dim);font-size:.9rem;padding:14px 0;}
+
+  .review-form-card{background:var(--bg-raised2);border:1px solid var(--line);border-radius:14px;padding:26px;max-width:520px;}
+  .review-form-card h3{font-size:1.1rem;font-weight:600;margin-bottom:16px;}
+
+  .star-input{display:inline-flex;flex-direction:row-reverse;gap:4px;}
+  .star-input input{position:absolute;opacity:0;width:0;height:0;}
+  .star-input label{font-size:1.8rem;color:var(--line);cursor:pointer;transition:color .15s;line-height:1;}
+  .star-input input:checked ~ label,
+  .star-input label:hover,
+  .star-input label:hover ~ label{color:#e8b563;}
+
+  footer{border-top:1px solid var(--line);padding:48px 0 28px;}  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px;margin-bottom:32px;}
+  @media (max-width:760px){.footer-grid{grid-template-columns:1fr 1fr;}}
+  .footer-col h4{font-size:.86rem;color:var(--text-dim);margin-bottom:14px;letter-spacing:.02em;}
+  .footer-col a,.footer-col p{display:block;color:var(--text-dim);text-decoration:none;font-size:.88rem;margin-bottom:9px;}
+  .footer-col a:hover{color:var(--accent);}
+  .footer-bottom{border-top:1px solid var(--line);padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;color:var(--text-dim);font-size:.82rem;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="logo"><span class="logo-mark">OS</span>OSS Steam</div>
+    <div class="nav-links">
+      <a href="#xizmatlar">Xizmatlar</a>
+      <a href="#narxlar">Narxlar</a>
+      <a href="#biz-haqimizda">Biz haqimizda</a>
+      <a href="#sharhlar">Sharhlar</a>
+      <a href="#faq">Savollar</a>
+      <a href="#buyurtma">Buyurtma</a>
+    </div>
+    <a class="nav-cta" href="#buyurtma">Buyurtma berish</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">OSS Steam</div>
+      <h1>Comfort your life</h1>
+      <p class="lead">Steam akkaunt ochish endi bosh og'rig'i emas. Tayyor akkaunt sotib oling yoki nik va parolingizni bering — qolganini biz bajaramiz.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#buyurtma">Hoziroq buyurtma berish</a>
+        <a class="btn btn-ghost" href="#xizmatlar">Xizmatlarni ko'rish</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-row"><span>Tayyor akkaunt</span><span class="pill">Tez</span></div>
+      <div class="hero-card-row"><span>Nik/parol bilan buyurtma</span><span class="pill">Oson</span></div>
+      <div class="hero-card-row"><span>Yetkazib berish</span><span class="pill">Telegram</span></div>
+      <div class="hero-card-row"><span>Qo'llab-quvvatlash</span><span class="pill">24/7</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="stats">
+    <div class="stat"><b>2400+</b><span>yetkazilgan buyurtma</span></div>
+    <div class="stat"><b>24/7</b><span>qo'llab-quvvatlash</span></div>
+    <div class="stat"><b>4.8/5</b><span>mijozlar bahosi</span></div>
+    <div class="stat"><b>&lt;10 daq</b><span>o'rtacha javob vaqti</span></div>
+  </div>
+</div>
+
+<section class="section" id="xizmatlar">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Ikki xil xizmat, bitta manzil</h2>
+      <p>O'zingizga qulayini tanlang — tayyor akkaunt xarid qiling yoki o'zingizning nikingiz bilan yangi akkaunt buyurtma qiling.</p>
+    </div>
+    <div class="services">
+      <div class="service-card">
+        <h3>Tayyor Steam akkaunt</h3>
+        <p>Oldindan tayyorlangan akkauntlardan birini tanlab, darhol qo'lga kiriting. Email va parol siz bilan bo'ladi.</p>
+        <div class="service-price"><span class="amount">50 000 so'm</span><span class="unit">dan boshlab</span></div>
+      </div>
+      <div class="service-card">
+        <h3>O'zingiz uchun yangi akkaunt</h3>
+        <p>Xohlagan nikingizni va parolingizni bering — biz sizga mos yangi Steam akkauntini sozlab beramiz.</p>
+        <div class="service-price"><span class="amount">25 000 so'm</span><span class="unit">/ akkaunt</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="qanday">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Qanday ishlaydi</h2>
+      <p>Uch qadamda buyurtmangiz tayyor bo'ladi.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="num">01</div><h3>Xizmatni tanlang</h3><p>Tayyor akkaunt yoki o'z nikingiz bilan yangi akkaunt — kerakli variantni belgilang.</p></div>
+      <div class="step"><div class="num">02</div><h3>Ma'lumot yuboring</h3><p>Formani to'ldiring: aloqa raqamingiz va (agar kerak bo'lsa) istalgan nik/parol.</p></div>
+      <div class="step"><div class="num">03</div><h3>Akkauntni qabul qiling</h3><p>To'lovdan so'ng akkaunt ma'lumotlari Telegram orqali sizga yuboriladi.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="narxlar">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Narxlar</h2>
+      <p>Ehtiyojingizga mos tarifni tanlang.</p>
+    </div>
+    <div class="pricing">
+      <div class="price-card">
+        <h3>Standart</h3>
+        <div class="p-amount">25 000 so'm</div>
+        <ul><li>Yangi akkaunt (siz bergan nik)</li><li>Email tasdiqlangan</li><li>Yetkazib berish — Telegram</li></ul>
+        <a class="btn btn-ghost" href="#buyurtma">Tanlash</a>
+      </div>
+      <div class="price-card featured">
+        <h3>Tayyor akkaunt</h3>
+        <div class="p-amount">50 000 so'm</div>
+        <ul><li>Darhol yetkazib berish</li><li>Tekshirilgan akkaunt</li><li>1 kunlik kafolat</li></ul>
+        <a class="btn btn-primary" href="#buyurtma">Tanlash</a>
+      </div>
+      <div class="price-card">
+        <h3>Premium</h3>
+        <div class="p-amount">90 000 so'm</div>
+        <ul><li>Tayyor akkaunt + sozlash</li><li>Ustuvor qo'llab-quvvatlash</li><li>7 kunlik kafolat</li></ul>
+        <a class="btn btn-ghost" href="#buyurtma">Tanlash</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="biz-haqimizda">
+  <div class="wrap about-grid">
+    <div class="about-text">
+      <h2>Biz haqimizda</h2>
+      <p style="margin-top:16px">OSS Steam — o'yinchilar uchun akkaunt xizmatlarini soddalashtirish maqsadida tashkil etilgan kichik jamoa. Bizning vazifamiz — akkaunt ochish yoki tanlashdagi bosh og'rig'ini olib tashlash, shunda siz vaqtingizni o'yin bilan o'tkazasiz.</p>
+      <p>Har bir buyurtma qo'lda tekshiriladi, mijoz ma'lumotlari maxfiy saqlanadi va yetkazib berish tez amalga oshiriladi.</p>
+    </div>
+    <div class="about-list">
+      <div class="about-item"><h4>Ishonchlilik</h4><p>Har bir buyurtma tasdiqlanadi va nazorat qilinadi.</p></div>
+      <div class="about-item"><h4>Tezlik</h4><p>Ko'p buyurtmalar bir necha daqiqada bajariladi.</p></div>
+      <div class="about-item"><h4>Maxfiylik</h4><p>Kiritilgan ma'lumotlar uchinchi shaxslarga berilmaydi.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="sharhlar">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Mijozlar sharhlari</h2>
+      <p>Xizmatimizdan foydalangan mijozlarning haqiqiy baholari va fikrlari.</p>
+    </div>
+
+    <div class="rating-summary" id="ratingSummary">
+      <div class="rating-big" id="ratingAvg">—</div>
+      <div>
+        <div class="rating-stars-big" id="ratingStarsBig">☆☆☆☆☆</div>
+        <div class="rating-count" id="ratingCount">Hali sharh yo'q</div>
+      </div>
+    </div>
+
+    <div class="reviews-list" id="reviewsList"></div>
+
+    <div class="review-form-card">
+      <h3>Fikringizni qoldiring</h3>
+      <form id="reviewForm">
+        <div class="field">
+          <label for="reviewName">Ismingiz</label>
+          <input id="reviewName" type="text" placeholder="Ism (ixtiyoriy)" maxlength="60">
+        </div>
+        <div class="field">
+          <label>Bahoyingiz</label>
+          <div class="star-input" id="starInput">
+            <input type="radio" id="star5" name="rating" value="5"><label for="star5" title="5">★</label>
+            <input type="radio" id="star4" name="rating" value="4"><label for="star4" title="4">★</label>
+            <input type="radio" id="star3" name="rating" value="3"><label for="star3" title="3">★</label>
+            <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="2">★</label>
+            <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="1">★</label>
+          </div>
+        </div>
+        <div class="field">
+          <label for="reviewComment">Izohingiz</label>
+          <input id="reviewComment" type="text" placeholder="Xizmat haqida fikringiz" maxlength="300">
+        </div>
+        <div class="submit-row">
+          <button type="submit" class="btn btn-primary">Sharh qoldirish</button>
+          <span id="reviewMsg"></span>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Ko'p beriladigan savollar</h2>
+      <p>Savolingiz javobini topmasangiz, Telegram orqali murojaat qiling.</p>
+    </div>
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-q">Buyurtma qancha vaqtda bajariladi? <span class="icon">+</span></button>
+        <div class="faq-a"><p>Tayyor akkauntlar odatda 5–15 daqiqada, individual buyurtmalar bir necha soat ichida yetkaziladi.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">To'lov qachon amalga oshiriladi? <span class="icon">+</span></button>
+        <div class="faq-a"><p>To'lov akkaunt tayyor bo'lgach, ma'lumotlarni ko'rgandan so'ng amalga oshiriladi.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Ma'lumotlarim xavfsizmi? <span class="icon">+</span></button>
+        <div class="faq-a"><p>Ha, barcha ma'lumotlar shifrlangan holda saqlanadi va faqat buyurtmani bajarish uchun ishlatiladi.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Agar akkauntda muammo chiqsa nima bo'ladi? <span class="icon">+</span></button>
+        <div class="faq-a"><p>Tanlangan tarifga qarab 1–7 kunlik kafolat davomida bepul almashtirib beramiz.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Akkauntga boshqa qurilmadan kirsam nima bo'ladi? <span class="icon">+</span></button>
+        <div class="faq-a"><p>Steam akkauntingizga boshqa joydan (yangi qurilma yoki kompyuterdan) kirmoqchi bo'lsangiz, nikingiz va parolingizni kiritasiz — shunda Steam akkaunt qaysi Gmail'ga ochilgan bo'lsa, o'sha emailga tasdiqlash kodini yuboradi. Gmail'ingizni ochib, o'sha kodni Steam'dagi maydonga kiritsangiz, kirish tugallanadi. Bu — Steam Guard deb ataladigan, akkauntingizni himoya qiluvchi oddiy va normal qadam.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section form-section" id="buyurtma">
+  <div class="wrap form-grid">
+    <div>
+      <h2>Buyurtma berish</h2>
+      <p class="form-note">
+        Formani to'ldiring — operatorimiz tez orada siz bilan bog'lanadi.
+        <ul>
+          <li>Nik va parolni faqat shu maqsad uchun ishlating, boshqa joyda ishlatilgan parolni bermang.</li>
+          <li>Gmail manzilingiz akkauntni tasdiqlash uchun kerak — Steam shu emailga tasdiqlash havolasini yuboradi.</li>
+          <li>Barcha ma'lumotlar maxfiy saqlanadi.</li>
+          <li>To'lov akkaunt tayyor bo'lgandan keyin amalga oshiriladi.</li>
+        </ul>
+      </p>
+    </div>
+    <form id="orderForm">
+      <div class="field">
+        <label for="service">Xizmat turi</label>
+        <select id="service">
+          <option value="ready">Tayyor akkaunt sotib olish</option>
+          <option value="new">Nik/parol bilan yangi akkaunt</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field"><label for="name">Ismingiz</label><input id="name" type="text" placeholder="Ism Familiya" required></div>
+        <div class="field"><label for="phone">Telefon raqam</label><input id="phone" type="tel" placeholder="+998 90 123 45 67" required></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label for="nick">Istalgan nik</label><input id="nick" type="text" placeholder="Masalan: shadow_uz"></div>
+        <div class="field"><label for="pass">Istalgan parol</label><input id="pass" type="text" placeholder="Kamida 8 belgi"></div>
+      </div>
+      <div class="field">
+        <label for="email">Gmail manzilingiz</label>
+        <input id="email" type="email" placeholder="masalan@gmail.com">
+      </div>
+      <div class="submit-row">
+        <button type="submit" class="btn btn-primary">Buyurtmani yuborish</button>
+        <span id="formMsg"></span>
+      </div>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>OSS Steam</h4>
+        <p>Comfort your life. Steam akkaunt xizmatlari — tez, ishonchli, maxfiy.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Menyu</h4>
+        <a href="#xizmatlar">Xizmatlar</a>
+        <a href="#narxlar">Narxlar</a>
+        <a href="#biz-haqimizda">Biz haqimizda</a>
+        <a href="#sharhlar">Sharhlar</a>
+        <a href="#faq">Savollar</a>
+      </div>
+      <div class="footer-col">
+        <h4>Xizmatlar</h4>
+        <a href="#buyurtma">Tayyor akkaunt</a>
+        <a href="#buyurtma">Yangi akkaunt</a>
+        <a href="#narxlar">Tariflar</a>
+      </div>
+      <div class="footer-col">
+        <h4>Aloqa</h4>
+        <a href="https://t.me/oss_steam" target="_blank" rel="noopener">Telegram: @oss_steam</a>
+        <p>+998 90 000 00 00</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 OSS Steam</div>
+      <div>Comfort your life</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // FAQ accordion
+  document.querySelectorAll('.faq-item').forEach(function(item){
+    item.querySelector('.faq-q').addEventListener('click', function(){
+      var wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(function(i){ i.classList.remove('open'); });
+      if(!wasOpen) item.classList.add('open');
+    });
+  });
+
+  // Sayt endi backend bilan bitta manzilda (Railway) joylashadi, shuning uchun
+  // nisbiy yo'l ishlatiladi — alohida domen yozish shart emas.
+  var BACKEND_URL = "";
+
+  document.getElementById('orderForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    var msg = document.getElementById('formMsg');
+    var payload = {
+      service: document.getElementById('service').value,
+      name: document.getElementById('name').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      nick: document.getElementById('nick').value.trim(),
+      pass: document.getElementById('pass').value.trim(),
+      email: document.getElementById('email').value.trim()
+    };
+
+    try{
+      var res = await fetch(BACKEND_URL + '/api/order', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      if(!res.ok) throw new Error('Server xatosi');
+      msg.className = 'ok';
+      msg.textContent = "Buyurtmangiz qabul qilindi. Tez orada bog'lanamiz.";
+      this.reset();
+    }catch(err){
+      msg.className = 'err';
+      msg.textContent = "Xatolik yuz berdi, birozdan so'ng qayta urinib ko'ring.";
+    }
+  });
+
+  // ---------- Sharhlar (reviews) ----------
+  var DEMO_REVIEWS = [
+    { name: "Diyorbek", rating: 5, comment: "Tez va ishonchli, akkauntni 10 daqiqada oldim.", created_at: new Date(Date.now()-86400000*2).toISOString() },
+    { name: "Shaxzoda", rating: 5, comment: "Narxi ham arzon, muloqot ham yaxshi bo'ldi.", created_at: new Date(Date.now()-86400000*5).toISOString() },
+    { name: "Jasur", rating: 4, comment: "Hammasi yaxshi, faqat biroz kutdim.", created_at: new Date(Date.now()-86400000*9).toISOString() }
+  ];
+
+  function starsHtml(rating){
+    var full = Math.round(rating);
+    var out = '';
+    for(var i=1;i<=5;i++) out += (i<=full ? '★' : '☆');
+    return out;
+  }
+
+  function escapeHtml(str){
+    var d = document.createElement('div');
+    d.innerText = str;
+    return d.innerHTML;
+  }
+
+  function renderReviews(reviews){
+    var list = document.getElementById('reviewsList');
+    var avgEl = document.getElementById('ratingAvg');
+    var starsBigEl = document.getElementById('ratingStarsBig');
+    var countEl = document.getElementById('ratingCount');
+
+    if(!reviews.length){
+      list.innerHTML = '<div class="review-empty">Hali sharh yo\'q — birinchi bo\'lib fikr qoldiring!</div>';
+      avgEl.textContent = '—';
+      starsBigEl.textContent = '☆☆☆☆☆';
+      countEl.textContent = "Hali sharh yo'q";
+      return;
+    }
+
+    var sum = reviews.reduce(function(s,r){ return s + r.rating; }, 0);
+    var avg = sum / reviews.length;
+    avgEl.textContent = avg.toFixed(1);
+    starsBigEl.textContent = starsHtml(avg);
+    countEl.textContent = reviews.length + " ta sharh asosida";
+
+    list.innerHTML = reviews.map(function(r){
+      var date = new Date(r.created_at);
+      var dateStr = isNaN(date) ? '' : date.toLocaleDateString();
+      return '<div class="review-card">' +
+        '<div class="review-top">' +
+          '<span class="review-name">' + escapeHtml(r.name || 'Mijoz') + '</span>' +
+          '<span class="review-stars">' + starsHtml(r.rating) + '</span>' +
+        '</div>' +
+        '<div class="review-comment">' + escapeHtml(r.comment || '') + '</div>' +
+        '<div class="review-date">' + dateStr + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  async function loadReviews(){
+    try{
+      var res = await fetch(BACKEND_URL + '/api/reviews');
+      var data = await res.json();
+      renderReviews(data.reviews || []);
+    }catch(err){
+      renderReviews(DEMO_REVIEWS);
+    }
+  }
+  loadReviews();
+
+  document.getElementById('reviewForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    var msg = document.getElementById('reviewMsg');
+    var ratingInput = document.querySelector('input[name="rating"]:checked');
+
+    if(!ratingInput){
+      msg.className = 'err';
+      msg.textContent = "Iltimos, yulduzcha orqali baho qo'ying.";
+      return;
+    }
+
+    var payload = {
+      name: document.getElementById('reviewName').value.trim(),
+      rating: parseInt(ratingInput.value, 10),
+      comment: document.getElementById('reviewComment').value.trim()
+    };
+
+    try{
+      var res = await fetch(BACKEND_URL + '/api/reviews', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      if(!res.ok) throw new Error('Server xatosi');
+      msg.className = 'ok';
+      msg.textContent = "Sharhingiz uchun rahmat!";
+      this.reset();
+      loadReviews();
+    }catch(err){
+      msg.className = 'err';
+      msg.textContent = "Xatolik yuz berdi, birozdan so'ng qayta urinib ko'ring.";
+    }
+  });
+</script>
+
+</body>
+</html>
