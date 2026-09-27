@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<title>OSS Steam — Admin panel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body{font-family:system-ui,sans-serif;background:#0e141b;color:#eef3f6;margin:0;padding:24px;}
+  h1{font-size:1.3rem;}
+  .login{max-width:360px;margin:80px auto;background:#141d27;padding:24px;border-radius:12px;border:1px solid #26333f;}
+  .login input{width:100%;padding:10px;margin-top:10px;border-radius:8px;border:1px solid #26333f;background:#0e141b;color:#fff;}
+  .login button, table button{margin-top:14px;padding:10px 16px;background:#5ec8d8;color:#0b1218;border:none;border-radius:8px;font-weight:600;cursor:pointer;}
+  table{width:100%;border-collapse:collapse;margin-top:20px;font-size:.9rem;}
+  th,td{padding:10px;border-bottom:1px solid #26333f;text-align:left;}
+  select{background:#0e141b;color:#fff;border:1px solid #26333f;border-radius:6px;padding:4px;}
+  #app{display:none;max-width:1000px;margin:0 auto;}
+  .err{color:#e8b563;}
+</style>
+</head>
+<body>
+
+<div class="login" id="loginBox">
+  <h1>Admin kirish</h1>
+  <input id="tokenInput" type="password" placeholder="Admin token">
+  <button onclick="login()">Kirish</button>
+  <p class="err" id="loginErr"></p>
+</div>
+
+<div id="app">
+  <h1>Buyurtmalar</h1>
+  <table>
+    <thead><tr><th>#</th><th>Xizmat</th><th>Ism</th><th>Tel</th><th>Nik</th><th>Email</th><th>Holat</th><th>Sana</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+
+  <h1 style="margin-top:36px">Sharhlar</h1>
+  <table>
+    <thead><tr><th>#</th><th>Ism</th><th>Baho</th><th>Izoh</th><th>Sana</th><th></th></tr></thead>
+    <tbody id="reviewRows"></tbody>
+  </table>
+</div>
+
+<script>
+  let TOKEN = '';
+  const API = location.origin; // backend shu domenda joylashgan deb faraz qilinadi
+
+  async function login(){
+    TOKEN = document.getElementById('tokenInput').value.trim();
+    try{
+      const res = await fetch(API + '/api/admin/orders', { headers: { 'x-admin-token': TOKEN } });
+      if(!res.ok) throw new Error('unauthorized');
+      const data = await res.json();
+      document.getElementById('loginBox').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      render(data.orders);
+      loadReviews();
+    }catch(e){
+      document.getElementById('loginErr').textContent = "Token noto'g'ri yoki server javob bermadi.";
+    }
+  }
+
+  async function loadReviews(){
+    try{
+      const res = await fetch(API + '/api/reviews');
+      const data = await res.json();
+      renderReviews(data.reviews || []);
+    }catch(e){}
+  }
+
+  function renderReviews(reviews){
+    const tbody = document.getElementById('reviewRows');
+    tbody.innerHTML = '';
+    reviews.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${r.id}</td>
+        <td>${escapeHtml(r.name || 'Mijoz')}</td>
+        <td>${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</td>
+        <td>${escapeHtml(r.comment || '')}</td>
+        <td>${new Date(r.created_at).toLocaleString()}</td>
+        <td><button data-id="${r.id}" class="delReview">O'chirish</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+    tbody.querySelectorAll('.delReview').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if(!confirm("Bu sharhni o'chirasizmi?")) return;
+        await fetch(`${API}/api/admin/reviews/${btn.dataset.id}`, {
+          method: 'DELETE',
+          headers: { 'x-admin-token': TOKEN },
+        });
+        loadReviews();
+      });
+    });
+  }
+
+  function render(orders){
+    const tbody = document.getElementById('rows');
+    tbody.innerHTML = '';
+    orders.forEach(o => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${o.id}</td>
+        <td>${o.service === 'ready' ? 'Tayyor akkaunt' : 'Yangi akkaunt'}</td>
+        <td>${escapeHtml(o.name)}</td>
+        <td>${escapeHtml(o.phone)}</td>
+        <td>${escapeHtml(o.nick || '—')}</td>
+        <td>${escapeHtml(o.email || '—')}</td>
+        <td>
+          <select data-id="${o.id}">
+            ${['yangi','jarayonda','bajarildi','bekor qilindi'].map(s => `<option value="${s}" ${s===o.status?'selected':''}>${s}</option>`).join('')}
+          </select>
+        </td>
+        <td>${new Date(o.created_at).toLocaleString()}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+    tbody.querySelectorAll('select').forEach(sel => {
+      sel.addEventListener('change', async () => {
+        await fetch(`${API}/api/admin/orders/${sel.dataset.id}/status`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-admin-token': TOKEN },
+          body: JSON.stringify({ status: sel.value }),
+        });
+      });
+    });
+  }
+
+  function escapeHtml(str){
+    const d = document.createElement('div');
+    d.innerText = str;
+    return d.innerHTML;
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "oss-steam-backend",
+  "version": "1.0.0",
+  "description": "OSS Steam - buyurtmalarni qabul qiluvchi va Telegramga avtomatik yuboruvchi backend",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.3.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "express-rate-limit": "^7.4.0",
+    "helmet": "^7.1.0",
+    "node-fetch": "^2.7.0"
+  }
+}
